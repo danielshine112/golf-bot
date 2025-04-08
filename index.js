@@ -1,5 +1,7 @@
 console.log('GBB Starting...');
 
+require('dotenv').config(); // Enable .env support if you use it
+
 const debug = require('debug')('GolfBot:startup');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
@@ -8,28 +10,25 @@ const mongoose = require('mongoose');
 const uiCore = new (require('./UI/UICore'))();
 const bookingManager = require('./bookingManager');
 
-//mongoose.set('useNewUrlParser', true);
-//mongoose.set('useFindAndModify', false);
-//mongoose.set('useCreateIndex', true);
-//mongoose.set('useUnifiedTopology', true);
+// === MongoDB Setup ===
 
-var mongodbURL = config.get('database.url')
-if (!mongodbURL)
-    mongodbURL = `mongodb://${config.get('database.host') || "localhost"}/${config.get('database.name') || "GBB"}`;
+// OPTION A: Use direct connection string (quick and dirty)
+const mongodbURL = "mongodb+srv://pedrogontizo:6ZoW1MlHjZZUqOW7@golf.pea0lsx.mongodb.net/GBB?retryWrites=true&w=majority&appName=Golf";
+
+// OPTION B: Use environment variable from .env (recommended for production)
+// const mongodbURL = process.env.MONGO_URI;
 
 const opts = {
     useNewUrlParser: true,
-    //useFindAndModify: false,
-    //useCreateIndex: true,
-    //useUnifiedTopology: true,
-    dbName: config.get('database.name') || "GBB"
+    useUnifiedTopology: true,
+    dbName: "GBB"
 };
 
 mongoose.connect(mongodbURL, opts)
     .then(async () => {
         const { currentSettings } = require('./models/settings');
         await currentSettings(true);
-        console.log("Connected to database");
+        console.log("✅ Connected to MongoDB Atlas");
 
         uiCore.start().then(port => {
             console.log("UI core started on port " + port);
@@ -55,18 +54,18 @@ mongoose.connect(mongodbURL, opts)
             };
         }).catch(() => { });
 
-
         const Browser = require('./Browser');
         Browser.initialize().then(() => {
             bookingManager.create().then(controller => {
                 console.log("BOT core started");
-                //setTimeout(() => { console.error('EXIT ***************'); process.exit(1); }, 30 * 1000)
+
                 const { BookingSchedule } = require('./models/bookingSchedules');
                 const { CancelationMonitoring } = require('./models/cancelationMonitoring');
 
                 const UpdateRecord = function (record) {
                     controller.deleteBot(record._id.toString());
                 };
+
                 uiCore.on('bookingschedule:update', UpdateRecord);
                 uiCore.on('bookingschedule:delete', UpdateRecord);
                 uiCore.on('cancelationmonitoring:delete', UpdateRecord);
@@ -87,9 +86,9 @@ mongoose.connect(mongodbURL, opts)
                 uiCore.on('settings:update', (newSettings) => {
                     controller.reloadSettings();
                 });
+
                 //Browser.newBrowser('http://comtools.net','./data');
 
             }).catch((error) => console.error("Starting BOT core failed.\n Controller problem:", error));
         }).catch((error) => console.error("Starting BOT core failed..\n Internal browser problem:", error));
-    }).catch((error) => console.error('Could not connect to database.', error));
-
+    }).catch((error) => console.error('❌ Could not connect to database.', error));
