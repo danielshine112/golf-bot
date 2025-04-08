@@ -13,10 +13,9 @@ const bookingManager = require('./bookingManager');
 // === MongoDB Setup ===
 
 // OPTION A: Use direct connection string (quick and dirty)
-const mongodbURL = "mongodb+srv://pedrogontizo:6ZoW1MlHjZZUqOW7@golf.pea0lsx.mongodb.net/GBB?retryWrites=true&w=majority&appName=Golf";
 
 // OPTION B: Use environment variable from .env (recommended for production)
-// const mongodbURL = process.env.MONGO_URI;
+const mongodbURL = process.env.MONGO_URI;
 
 const opts = {
     useNewUrlParser: true,
