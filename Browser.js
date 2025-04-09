@@ -309,4 +309,23 @@ module.exports = class {
         });     
     }
 }
-*/
+
+const fs = require('fs');
+const AdmZip = require('adm-zip');
+
+// ...existing code...
+
+try {
+    const zipPath = './path/to/your/zipfile.zip'; // Replace with the actual path
+    if (!fs.existsSync(zipPath)) {
+        throw new Error('ZIP file not found at ' + zipPath);
+    }
+
+    const zip = new AdmZip(zipPath);
+    zip.extractAllTo('./path/to/extract', true); // Replace with the actual extraction path
+} catch (error) {
+    console.error('Error processing ZIP file:', error.message);
+    process.exit(1); // Exit the process if the ZIP file is invalid
+}
+
+// ...existing code...*/

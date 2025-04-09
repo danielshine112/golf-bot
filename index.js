@@ -15,7 +15,7 @@ const bookingManager = require('./bookingManager');
 // OPTION A: Use direct connection string (quick and dirty)
 
 // OPTION B: Use environment variable from .env (recommended for production)
-const mongodbURL = process.env.MONGO_URI;
+const mongodbURL = process.env.MONGO_URL; // Fix: Use MONGO_URL instead of MONGO_URI
 
 const opts = {
     useNewUrlParser: true,
