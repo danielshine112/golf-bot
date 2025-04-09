@@ -5,6 +5,7 @@
   "main": "index.js",
   "bin": "index.js",
   "scripts": {
+    "build": "echo 'halo'",
     "start": "node index.js"
   },
   "keywords": [],
