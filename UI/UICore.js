@@ -34,7 +34,7 @@ module.exports = class extends EventEmitter{
                 app.use('/api/settings/',require('./routes/settings')(Router(),this));                
 
                 const config = require('config');
-                const port = parseInt(config.get('port')) || 8080;
+                const port = /*parseInt(config.get('port'))*/ process.env.PORT || 8080;
                 app.listen(port, ()=>{
                     resolve(port);
                 });        

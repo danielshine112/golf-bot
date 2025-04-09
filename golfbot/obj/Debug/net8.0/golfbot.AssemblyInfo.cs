@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("golfbot")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+51d3e13ab00b9b904ac6b061ffe6c6850c80bcfc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+394cee4807a2736ad48b5bd5449dcc22ffbc1039")]
 [assembly: System.Reflection.AssemblyProductAttribute("golfbot")]
 [assembly: System.Reflection.AssemblyTitleAttribute("golfbot")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
